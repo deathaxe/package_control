@@ -35,6 +35,9 @@ class ExistingPackagesCommand():
 
         packages = self.manager.list_packages()
 
+        if USE_QUICK_PANEL_ITEM:
+            package_kind = (sublime.KIND_ID_MARKUP, '📦', 'Package')
+
         if action:
             action += ' '
 
@@ -63,7 +66,9 @@ class ExistingPackagesCommand():
                 final_line = '<em>' + action + installed_version + '</em>'
                 if url_display:
                     final_line += '; <a href="%s">%s</a>' % (url, url_display)
-                package_entry = sublime.QuickPanelItem(package, [description, final_line])
+                package_entry = sublime.QuickPanelItem(
+                    package, [description, final_line], kind=package_kind
+                )
             else:
                 final_line = action + installed_version
                 if url_display:

@@ -60,6 +60,9 @@ class PackageInstaller(PackageDisabler):
         packages = self.manager.list_available_packages()
         installed_packages = self.manager.list_packages()
 
+        if USE_QUICK_PANEL_ITEM:
+            package_kind = (sublime.KIND_ID_MARKUP, '📦', 'Package')
+
         package_list = []
         for package in sorted(iter(packages.keys()), key=lambda s: s.lower()):
             if ignore_packages and package in ignore_packages:
@@ -144,7 +147,9 @@ class PackageInstaller(PackageDisabler):
                     if action or extra:
                         final_line += ' '
                     final_line += '<a href="%s">%s</a>' % (homepage, homepage_display)
-                package_entry = sublime.QuickPanelItem(package, [description, final_line])
+                package_entry = sublime.QuickPanelItem(
+                    package, [description, final_line], kind=package_kind
+                )
             else:
                 package_entry = [package]
                 package_entry.append(description)
