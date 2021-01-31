@@ -9,7 +9,7 @@ from ..providers.gitlab_user_provider import GitLabUserProvider
 from ..providers.bitbucket_repository_provider import BitBucketRepositoryProvider
 from ..http_cache import HttpCache
 
-from . import LAST_COMMIT_TIMESTAMP, LAST_COMMIT_VERSION, CLIENT_ID, CLIENT_SECRET
+from . import LAST_COMMIT_TIMESTAMP, LAST_COMMIT_VERSION, CLIENT_ID, CLIENT_SECRET, USER_AGENT
 
 
 class GitHubRepositoryProviderTests(unittest.TestCase):
@@ -19,12 +19,14 @@ class GitHubRepositoryProviderTests(unittest.TestCase):
         return {
             'debug': True,
             'cache': HttpCache(604800),
+            'cache_length': 604800,  # required to handle RateLimitException
             'query_string_params': {
                 'api.github.com': {
                     'client_id': CLIENT_ID,
                     'client_secret': CLIENT_SECRET
                 }
-            }
+            },
+            'user_agent': USER_AGENT
         }
 
     def test_match_url(self):
@@ -128,12 +130,14 @@ class GitHubUserProviderTests(unittest.TestCase):
         return {
             'debug': True,
             'cache': HttpCache(604800),
+            'cache_length': 604800,  # required to handle RateLimitException
             'query_string_params': {
                 'api.github.com': {
                     'client_id': CLIENT_ID,
                     'client_secret': CLIENT_SECRET
                 }
-            }
+            },
+            'user_agent': USER_AGENT
         }
 
     def test_match_url(self):
@@ -499,12 +503,14 @@ class RepositoryProviderTests(unittest.TestCase):
         return {
             'debug': True,
             'cache': HttpCache(604800),
+            'cache_length': 604800,  # required to handle RateLimitException
             'query_string_params': {
                 'api.github.com': {
                     'client_id': CLIENT_ID,
                     'client_secret': CLIENT_SECRET
                 }
-            }
+            },
+            'user_agent': USER_AGENT
         }
 
     def test_get_packages_10(self):
